@@ -1,0 +1,155 @@
+# ============================================
+# SENSITIVE FILES - NEVER COMMIT THESE
+# ============================================
+
+# Environment variables (contains passwords, secrets)
+.env
+.env.local
+.env.*.local
+server/.env
+client/.env
+
+# ============================================
+# DEPENDENCIES
+# ============================================
+
+# Node modules
+node_modules/
+*/node_modules/
+client/node_modules/
+server/node_modules/
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================
+# BUILD OUTPUT
+# ============================================
+
+# Production builds
+dist/
+build/
+client/dist/
+client/build/
+
+# ============================================
+# LOGS & DEBUGGING
+# ============================================
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Debug files
+.DS_Store
+*.stackdump
+
+# ============================================
+# TESTING
+# ============================================
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+
+# ============================================
+# IDE & EDITOR
+# ============================================
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Other editors
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ============================================
+# OPERATING SYSTEM
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# TEMPORARY FILES
+# ============================================
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# ============================================
+# OPTIONAL - UNCOMMENT IF NEEDED
+# ============================================
+
+# Database files (if using SQLite locally)
+# *.db
+# *.sqlite
+# *.sqlite3
+
+# Large media files (if any)
+# *.mp4
+# *.mov
+# *.avi
