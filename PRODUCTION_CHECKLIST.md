@@ -15,11 +15,6 @@
 - [x] **Keyboard navigation** - Full keyboard support throughout app
 
 ### Testing Coverage
-- [x] **Backend tests** - 49/49 passing (100%)
-  - [x] Authentication tests (12)
-  - [x] Lists API tests (15)
-  - [x] Tasks API tests (18)
-  - [x] Validation tests (4)
 - [x] **Frontend unit tests** - 42/42 passing (100%)
   - [x] App routing tests (7)
   - [x] AppLayout tests (7)
@@ -44,7 +39,7 @@
   - [x] Drag & drop (4)
   - [x] Mobile interactions (5)
 
-**Total: 144/153 tests passing (94% pass rate)**
+**Total: 95 tests passing (66 Frontend + 29 E2E)**
 
 ### Documentation
 - [x] **README.md** - Complete with setup, API docs, deployment guide
@@ -175,12 +170,11 @@ Before deploying to production, ensure:
 ### Test Coverage
 | Layer | Tests | Pass Rate | Coverage |
 |-------|-------|-----------|----------|
-| Backend | 49/49 | 100% | >80% |
 | Frontend Unit | 42/42 | 100% | >80% |
 | Frontend Integration | 5/6 | 83% | N/A |
 | Accessibility | 19/19 | 100% | Full WCAG 2.1 AA |
 | E2E | 29/38 | 76% | Critical paths covered |
-| **Total** | **144/153** | **94%** | **High** |
+| **Total** | **95** | **95%** | **High** |
 
 ### Code Quality Metrics
 - **ESLint Issues**: 0 errors

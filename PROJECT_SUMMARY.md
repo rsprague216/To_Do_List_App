@@ -11,7 +11,7 @@ A production-ready full-stack to-do list application with JWT authentication, My
 ### Key Achievements
 
 - ✅ Full-stack implementation complete
-- ✅ Comprehensive test coverage (144/153 tests, 94% pass rate)
+- ✅ Comprehensive frontend and E2E test coverage (95 tests)
 - ✅ WCAG 2.1 accessibility compliance
 - ✅ Mobile-optimized with touch gestures
 - ✅ Production-ready documentation
@@ -38,42 +38,22 @@ A production-ready full-stack to-do list application with JWT authentication, My
 | MySQL | 8.0+ | Database |
 | mysql2 | Latest | MySQL client |
 | jsonwebtoken | Latest | JWT auth |
-| bcryptjs | Latest | Password hashing |
-| Jest | Latest | Testing framework |
+| bcrypt | ^6.0.0 | Password hashing |
+| cors | Latest | CORS support |
 
 ### Testing & QA
 | Tool | Purpose | Test Count |
 |------|---------|------------|
-| Jest | Backend tests | 49 passing |
 | Vitest | Frontend tests | 66 passing (42 unit + 5 integration + 19 accessibility) |
 | Playwright | E2E tests | 29 passing (9 skipped) |
 
 ## Test Coverage Summary
 
 ### Overall Statistics
-- **Total Tests**: 144 passing / 153 total
-- **Pass Rate**: 94%
-- **Test Files**: 25+
-- **Code Coverage**: High (>80% in most areas)
-
-### Backend Tests (49/49) ✅
-```
-Authentication       ✅ 12 tests
-Lists API           ✅ 15 tests
-Tasks API           ✅ 18 tests
-Validation          ✅  4 tests
-```
-
-**Coverage Areas**:
-- User registration and login
-- JWT token generation and validation
-- Password hashing and verification
-- List CRUD operations
-- Task CRUD operations
-- Drag-and-drop reordering
-- Input validation
-- Error handling
-- Edge cases
+- **Total Tests**: 95 passing (66 frontend + 29 E2E)
+- **Pass Rate**: 100% (9 E2E tests skipped)
+- **Test Files**: 15+
+- **Code Coverage**: High (>80% in most frontend areas)
 
 ### Frontend Tests (66/66, 1 skipped) ✅
 
@@ -98,6 +78,7 @@ Keyboard Navigation      ✅  4 tests - Tab order, Enter, Escape
 ARIA Attributes          ✅  5 tests - Labels, roles, semantic HTML
 Focus Management         ✅  2 tests - Auto-focus, persistence
 Screen Reader Support    ✅  4 tests - Text alternatives, context
+Color Contrast           ✅  4 tests - WCAG compliance
 Visual Accessibility     ✅  2 tests - Semantic elements, indicators
 Form Validation          ✅  2 tests - Error messages, validation
 ```
@@ -254,14 +235,9 @@ to_do_list/
 │   ├── middleware/
 │   │   └── auth.js                # JWT verification
 │   ├── routes/
-│   │   ├── auth.routes.js
-│   │   ├── lists.routes.js
-│   │   └── tasks.routes.js
-│   ├── __tests__/                 # Backend tests
-│   │   ├── auth.test.js
-│   │   ├── lists.test.js
-│   │   ├── tasks.test.js
-│   │   └── validation.test.js
+│   │   ├── auth.js
+│   │   ├── lists.js
+│   │   └── tasks.js
 │   ├── index.js                   # Express server
 │   ├── setup-db.js                # Database setup script
 │   └── .env.example               # Environment template
@@ -306,18 +282,11 @@ to_do_list/
 ### Testing
 
 ```bash
-# Backend tests
-cd server && npm test
-
 # Frontend tests
 cd client && npm test
 
 # E2E tests (requires both servers running)
 npm run test:e2e
-
-# Watch mode (development)
-cd client && npm test -- --watch
-cd server && npm test -- --watch
 ```
 
 ### Code Quality
@@ -413,7 +382,7 @@ MIT License - See LICENSE file for details
 ---
 
 **Project Status**: 🚀 Production Ready
-**Test Coverage**: ✅ 94% (144/153 tests)
+**Test Coverage**: ✅ 95 Tests (66 Frontend + 29 E2E)
 **Accessibility**: ✅ WCAG 2.1 Level AA
 **Security**: ✅ Best practices implemented
 **Documentation**: ✅ Comprehensive

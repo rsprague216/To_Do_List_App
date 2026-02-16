@@ -13,7 +13,7 @@
 ### Codebase
 - **Frontend Files**: 20 (React components, pages, context, tests)
 - **Backend Files**: 8 (API routes, middleware, database, tests)
-- **Test Files**: 20 (Jest, Vitest, Playwright)
+- **Test Files**: 15+ (Vitest, Playwright)
 - **Documentation**: 14 markdown files
 - **Total Lines of Code**: ~5,000+ (estimated)
 
@@ -80,37 +80,6 @@
 ---
 
 ## 🧪 Testing Achievements
-
-### Backend Tests (49/49) ✅
-**Test File**: `server/__tests__/*.test.js`
-
-- **Authentication** (12 tests)
-  - User registration validation
-  - Login with correct/incorrect credentials
-  - JWT token generation
-  - Password hashing verification
-  - Duplicate username handling
-
-- **Lists API** (15 tests)
-  - Get lists for authenticated user
-  - Create new list
-  - Update list name
-  - Delete list with cascade
-  - Authorization checks
-  - Edge cases (empty names, long names, etc.)
-
-- **Tasks API** (18 tests)
-  - Get tasks for a list
-  - Create task
-  - Update task (title, completed, important)
-  - Delete task
-  - Reorder tasks (drag-and-drop)
-  - Validation (title length, etc.)
-
-- **Validation** (4 tests)
-  - Input sanitization
-  - Error handling
-  - Edge cases
 
 ### Frontend Tests (66/66, 1 skipped) ✅
 **Test Files**: `client/src/__tests__/*.test.jsx`
@@ -447,13 +416,12 @@ For new developers joining the project:
 - **MySQL 8** - Robust relational database
 - **JWT** - Stateless authentication
 - **bcrypt** - Industry-standard hashing
-- **Jest** - Delightful testing
+- **cors** - Cross-origin resource sharing
 
 ### Testing Stack
 - **Vitest** - Fast unit tests
 - **Testing Library** - User-centric tests
 - **Playwright** - Reliable E2E tests
-- **Jest** - Backend testing
 
 ---
 
@@ -478,7 +446,7 @@ The application is complete and production-ready. Optional enhancements:
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| **Test Coverage** | 94% (144/153) | ✅ Excellent |
+| **Test Coverage** | 95 tests (66 Frontend + 29 E2E) | ✅ Excellent |
 | **Accessibility** | WCAG 2.1 AA | ✅ Compliant |
 | **Security** | Best practices | ✅ Implemented |
 | **Documentation** | 14 files | ✅ Comprehensive |

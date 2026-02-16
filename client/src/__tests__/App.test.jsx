@@ -18,8 +18,8 @@ vi.mock('../pages/AuthPage', () => ({
   AuthPage: () => <div data-testid="auth-page">Auth Page</div>
 }));
 
-vi.mock('../pages/AppLayout', () => ({
-  AppLayout: () => <div data-testid="app-layout">App Layout</div>
+vi.mock('../pages/AppPage', () => ({
+  AppPage: () => <div data-testid="app-layout">App Layout</div>
 }));
 
 vi.mock('../components/ProtectedRoute', () => ({

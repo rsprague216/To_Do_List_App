@@ -52,28 +52,52 @@ The frontend for a modern, full-stack to-do list application built with React, V
 ```
 client/
 ├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── Header.jsx       # App header with logout
-│   │   ├── MainContent.jsx  # Main task view with CRUD
-│   │   ├── ProtectedRoute.jsx
-│   │   └── Sidebar.jsx      # List navigation and creation
+│   ├── components/              # Reusable UI components
+│   │   ├── ProtectedRoute.jsx   # Route protection wrapper
+│   │   ├── auth/                # Authentication components
+│   │   │   ├── LoginForm.jsx
+│   │   │   └── SignUpForm.jsx
+│   │   ├── layout/              # Layout components
+│   │   │   ├── Header.jsx       # App header with logout
+│   │   │   ├── MainContent.jsx  # Main task view with CRUD
+│   │   │   └── Sidebar.jsx      # List navigation and creation
+│   │   ├── lists/               # List management components
+│   │   │   ├── ListItem.jsx
+│   │   │   └── NewListButton.jsx
+│   │   └── tasks/               # Task components
+│   │       ├── AddTaskInput.jsx
+│   │       ├── CompletedTasksSection.jsx
+│   │       ├── TaskItem.jsx
+│   │       └── TaskList.jsx
 │   ├── context/
-│   │   └── AuthContext.jsx  # Authentication state management
+│   │   └── AuthContext.jsx      # Authentication state management
+│   ├── hooks/                   # Custom React hooks
+│   │   ├── useLists.js          # List management logic
+│   │   └── useTasks.js          # Task management logic
 │   ├── pages/
-│   │   ├── AppLayout.jsx    # Main app layout
-│   │   └── AuthPage.jsx     # Login/signup page
-│   ├── __tests__/           # Component and integration tests
-│   ├── App.jsx              # Root component with routing
-│   ├── main.jsx             # React entry point
-│   ├── index.css            # Tailwind directives
-│   └── App.css              # Additional styles
-├── public/                  # Static assets
-├── index.html               # HTML template
-├── vite.config.js           # Vite configuration
-├── vitest.config.js         # Vitest configuration
-├── tailwind.config.js       # Tailwind configuration
-├── postcss.config.js        # PostCSS configuration
-└── package.json             # Dependencies and scripts
+│   │   ├── AppPage.jsx          # Main app layout
+│   │   └── AuthPage.jsx         # Login/signup page
+│   ├── services/                # API services
+│   │   └── api.js               # Axios client with interceptors
+│   ├── utils/                   # Utility functions
+│   │   ├── constants.js         # App constants
+│   │   ├── localStorage.js      # Local storage helpers
+│   │   └── validation.js        # Input validation
+│   ├── __tests__/               # Component and integration tests
+│   ├── test/                    # Test utilities
+│   │   └── setup.js
+│   ├── App.jsx                  # Root component with routing
+│   ├── main.jsx                 # React entry point
+│   ├── index.css                # Tailwind directives
+│   └── App.css                  # Additional styles
+├── public/                      # Static assets
+├── index.html                   # HTML template
+├── vite.config.js               # Vite configuration
+├── vitest.config.js             # Vitest configuration
+├── tailwind.config.js           # Tailwind configuration
+├── postcss.config.js            # PostCSS configuration
+├── eslint.config.js             # ESLint configuration
+└── package.json                 # Dependencies and scripts
 ```
 
 ## Getting Started
@@ -133,30 +157,31 @@ npm run lint
 
 ## Environment Variables
 
-The frontend communicates with the backend API. Make sure the backend server is running on `http://localhost:3000` or update the API base URL in the components.
+The frontend communicates with the backend API. Make sure the backend server is running on `http://localhost:3000` or update the API base URL in [src/utils/constants.js](src/utils/constants.js).
 
 ## API Integration
 
 The frontend makes requests to the following backend endpoints:
 
 ### Authentication
-- `POST /api/auth/signup` - Create new user account
+- `POST /api/auth/register` - Create new user account
 - `POST /api/auth/login` - Login existing user
+- `GET /api/auth/me` - Get current authenticated user
 
 ### Lists
 - `GET /api/lists` - Get all lists for user
+- `GET /api/lists/:id` - Get single list by ID
 - `POST /api/lists` - Create new list
 - `PUT /api/lists/:id` - Update list name
 - `DELETE /api/lists/:id` - Delete list
 
 ### Tasks
-- `GET /api/tasks/:listId` - Get all tasks for a list
-- `POST /api/tasks` - Create new task
-- `PUT /api/tasks/:id` - Update task
-- `PUT /api/tasks/:id/complete` - Toggle task completion
-- `PUT /api/tasks/:id/important` - Toggle task importance
-- `PUT /api/tasks/reorder` - Update task order
+- `GET /api/lists/:listId/tasks` - Get all tasks for a list
+- `GET /api/tasks/important` - Get all important tasks across all lists
+- `POST /api/lists/:listId/tasks` - Create new task
+- `PATCH /api/tasks/:id` - Update task (title, is_completed, is_important)
 - `DELETE /api/tasks/:id` - Delete task
+- `PATCH /api/lists/:listId/tasks/reorder` - Update task order via drag-and-drop
 
 ## Key Dependencies
 

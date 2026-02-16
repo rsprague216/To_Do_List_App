@@ -115,15 +115,15 @@ describe('AuthPage Component', () => {
   it('should clear form when toggling between login and signup', async () => {
     renderAuthPage();
     const user = userEvent.setup();
-    
+
     // Fill in login form
-    const usernameInput = screen.getByPlaceholderText(/enter your username/i);
-    await user.type(usernameInput, 'testuser');
-    
-    // Toggle to signup
+    await user.type(screen.getByPlaceholderText(/enter your username/i), 'testuser');
+
+    // Toggle to signup (LoginForm unmounts, SignUpForm mounts fresh)
     await user.click(screen.getByRole('button', { name: /^sign up$/i }));
-    
-    // Form should be cleared
-    expect(usernameInput).toHaveValue('');
+
+    // Re-query the input in the new SignUpForm — it should be empty
+    const newUsernameInput = screen.getByPlaceholderText(/enter your username/i);
+    expect(newUsernameInput).toHaveValue('');
   });
 });

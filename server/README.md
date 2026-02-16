@@ -11,7 +11,7 @@ A RESTful API backend for a to-do list application built with Node.js, Express, 
 - **jsonwebtoken** - JWT authentication
 - **bcrypt 6** - Password hashing
 - **dotenv** - Environment variable management
-- **Jest** - Testing framework with 49 passing tests
+- **cors** - Cross-origin resource sharing
 
 ## Features
 
@@ -43,14 +43,6 @@ A RESTful API backend for a to-do list application built with Node.js, Express, 
 - Cascade deletion for related records
 - Indexed columns for optimized queries
 - UTF-8 character support (utf8mb4)
-
-### Testing
-- 49 comprehensive tests covering all endpoints
-- Authentication tests
-- Lists CRUD tests
-- Tasks CRUD tests
-- Authorization and edge case tests
-- See [TEST_RESULTS.md](TEST_RESULTS.md) for detailed results
 
 ## Project Structure
 
@@ -241,7 +233,7 @@ Content-Type: application/json
 
 #### Update Task
 ```http
-PUT /api/tasks/:id
+PATCH /api/tasks/:id
 Content-Type: application/json
 
 {
@@ -251,34 +243,25 @@ Content-Type: application/json
 }
 ```
 
-#### Toggle Task Completion
-```http
-PUT /api/tasks/:id/complete
-```
+**Note:** All fields are optional. Only include fields you want to update.
 
-#### Toggle Task Importance
+#### Delete Task
 ```http
-PUT /api/tasks/:id/important
+DELETE /api/tasks/:id
 ```
 
 #### Reorder Tasks
 ```http
-PUT /api/tasks/reorder
+PATCH /api/lists/:listId/tasks/reorder
 Content-Type: application/json
 
 {
-  "listId": 1,
   "taskOrders": [
     { "id": 5, "position": 0 },
     { "id": 3, "position": 1 },
     { "id": 1, "position": 2 }
   ]
 }
-```
-
-#### Delete Task
-```http
-DELETE /api/tasks/:id
 ```
 
 ## Database Schema
@@ -370,21 +353,6 @@ npm start
 ```
 
 The server will start on `http://localhost:3000` (or the port specified in `.env`).
-
-### Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Generate coverage report
-npm run test:coverage
-```
-
-**Test Results:** 49 tests passing with comprehensive coverage. See [TEST_RESULTS.md](TEST_RESULTS.md) for detailed results.
 
 ### Verify Database Connection
 

@@ -1,25 +1,4 @@
-/**
- * Header Component
- * 
- * Top navigation bar for the app.
- * 
- * Desktop/Tablet:
- * - Left: App title with username
- * - Right: Logout button
- * 
- * Mobile:
- * - Left: Hamburger menu icon
- * - Center: Current list name
- * - Right: User menu (logout)
- * 
- * Props:
- * - username: Current user's username
- * - currentListName: Name of currently selected list (for mobile)
- * - onMenuToggle: Callback to toggle mobile sidebar
- * - isMobile: Boolean for mobile layout
- */
-
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const Header = ({ username, currentListName, onMenuToggle, isMobile }) => {
   const { logout } = useAuth();
@@ -31,7 +10,6 @@ export const Header = ({ username, currentListName, onMenuToggle, isMobile }) =>
   if (isMobile) {
     return (
       <header className="fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-40">
-        {/* Hamburger menu */}
         <button
           onClick={onMenuToggle}
           className="p-2 -ml-2 hover:bg-gray-100 rounded-lg transition"
@@ -42,12 +20,10 @@ export const Header = ({ username, currentListName, onMenuToggle, isMobile }) =>
           </svg>
         </button>
 
-        {/* Current list name */}
         <h1 className="text-lg font-semibold text-gray-800 truncate flex-1 text-center px-2">
           {currentListName || 'My Day'}
         </h1>
 
-        {/* User menu */}
         <button
           onClick={handleLogout}
           className="p-2 -mr-2 hover:bg-gray-100 rounded-lg transition"
@@ -61,15 +37,12 @@ export const Header = ({ username, currentListName, onMenuToggle, isMobile }) =>
     );
   }
 
-  // Desktop/Tablet layout
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-40">
-      {/* App title with username */}
       <h1 className="text-xl font-semibold text-gray-800">
         {username}'s To Do Lists
       </h1>
 
-      {/* Logout button */}
       <button
         onClick={handleLogout}
         className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition flex items-center gap-2 font-medium"

@@ -39,37 +39,27 @@ cd server && npm run dev
 # Start frontend dev server (http://localhost:5173)
 cd client && npm run dev
 
-# Run backend tests
-cd server && npm test
-
 # Run frontend tests
 cd client && npm test
 
 # Run E2E tests (requires both servers running)
 npm run test:e2e
 
-# Watch mode for tests
-cd client && npm test -- --watch
-cd server && npm test:watch
+# Watch mode for frontend tests
+cd client && npm test
 ```
 
 ### Testing
 
 ```bash
-# Run all backend tests
-cd server && npm test
-
-# Run backend tests with coverage
-cd server && npm test:coverage
-
 # Run all frontend tests
 cd client && npm test -- --run
 
-# Run specific frontend test file
-cd client && npm test -- --run Accessibility.test
-
 # Run frontend tests with coverage
 cd client && npm test:coverage
+
+# Run specific frontend test file
+cd client && npm test -- --run Accessibility.test
 
 # Run E2E tests
 npm run test:e2e
@@ -79,6 +69,9 @@ npm run test:e2e -- --ui
 
 # Run specific E2E test file
 npm run test:e2e -- tests/auth.spec.js
+
+# Watch mode for frontend tests
+cd client && npm test
 ```
 
 ### Database

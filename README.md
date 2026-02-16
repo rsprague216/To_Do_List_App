@@ -49,8 +49,8 @@ A modern to-do list application built with React, Vite, TailwindCSS on the front
 - **MySQL** - Relational database
 - **mysql2** - MySQL client with connection pooling
 - **jsonwebtoken** - JWT authentication
-- **bcryptjs** - Password hashing
-- **Jest** - Backend testing framework
+- **bcrypt** - Password hashing
+- **cors** - Cross-origin resource sharing
 
 ### E2E Testing
 - **Playwright** - Browser automation and testing
@@ -59,23 +59,85 @@ A modern to-do list application built with React, Vite, TailwindCSS on the front
 
 ```
 .
-├── client/                 # Frontend application
+├── client/                     # Frontend application
 │   ├── src/
-│   │   ├── App.jsx        # Main app component with to-do logic
-│   │   ├── App.css        # Styles (using Tailwind)
-│   │   ├── main.jsx       # React entry point
-│   │   └── index.css      # Tailwind directives
+│   │   ├── components/         # React components
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   ├── auth/          # Authentication components
+│   │   │   │   ├── LoginForm.jsx
+│   │   │   │   └── SignUpForm.jsx
+│   │   │   ├── layout/        # Layout components
+│   │   │   │   ├── Header.jsx
+│   │   │   │   ├── MainContent.jsx
+│   │   │   │   └── Sidebar.jsx
+│   │   │   ├── lists/         # List components
+│   │   │   │   ├── ListItem.jsx
+│   │   │   │   └── NewListButton.jsx
+│   │   │   └── tasks/         # Task components
+│   │   │       ├── AddTaskInput.jsx
+│   │   │       ├── CompletedTasksSection.jsx
+│   │   │       ├── TaskItem.jsx
+│   │   │       └── TaskList.jsx
+│   │   ├── context/           # React context
+│   │   │   └── AuthContext.jsx
+│   │   ├── hooks/             # Custom hooks
+│   │   │   ├── useLists.js
+│   │   │   └── useTasks.js
+│   │   ├── pages/             # Page components
+│   │   │   ├── AppPage.jsx
+│   │   │   └── AuthPage.jsx
+│   │   ├── services/          # API services
+│   │   │   └── api.js
+│   │   ├── utils/             # Utility functions
+│   │   │   ├── constants.js
+│   │   │   ├── localStorage.js
+│   │   │   └── validation.js
+│   │   ├── __tests__/         # Component tests
+│   │   ├── App.jsx            # Main app component with routing
+│   │   ├── App.css            # Additional styles
+│   │   ├── main.jsx           # React entry point
+│   │   └── index.css          # Tailwind directives
+│   ├── public/                # Static assets
 │   ├── index.html
 │   ├── package.json
 │   ├── vite.config.js
+│   ├── vitest.config.js       # Testing configuration
 │   ├── tailwind.config.js
-│   └── postcss.config.js
+│   ├── postcss.config.js
+│   └── eslint.config.js
 │
-├── server/                 # Backend application
-│   ├── index.js           # Express server with API routes
+├── server/                     # Backend application
+│   ├── db/                    # Database
+│   │   ├── connection.js      # MySQL connection pool
+│   │   └── schema.sql         # Database schema
+│   ├── middleware/            # Express middleware
+│   │   └── auth.js            # JWT authentication
+│   ├── routes/                # API routes
+│   │   ├── auth.js            # Authentication endpoints
+│   │   ├── lists.js           # Lists CRUD
+│   │   └── tasks.js           # Tasks CRUD
+│   ├── index.js               # Express server entry point
+│   ├── setup-db.js            # Database setup script
+│   ├── verify-db.js           # Database verification script
 │   └── package.json
 │
-└── README.md
+├── e2e/                        # End-to-end tests
+│   ├── auth.spec.js
+│   ├── lists.spec.js
+│   └── tasks.spec.js
+│
+├── README.md                   # Main documentation
+├── PROJECT_SUMMARY.md          # Project overview
+├── QUICK_REFERENCE.md          # Common commands
+├── CODE_DOCUMENTATION.md       # Code commenting standards
+├── DEVELOPMENT_PROCESS.md      # Development journey
+├── DESIGN_PROCESS.md           # Design methodology
+├── PRODUCTION_CHECKLIST.md     # Production deployment guide
+├── CONTRIBUTING.md             # Contribution guidelines
+├── FRONTEND_TEST_RESULTS.md    # Frontend test results
+├── E2E_TEST_RESULTS.md         # E2E test results
+├── FINAL_REPORT.md             # Project final report
+└── playwright.config.js        # Playwright configuration
 ```
 
 ## Getting Started
@@ -168,22 +230,22 @@ The app will run on http://localhost:5173
 #### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login and receive JWT token
+- `GET /api/auth/me` - Get current authenticated user
 
 #### Lists
 - `GET /api/lists` - Get all lists for authenticated user
+- `GET /api/lists/:id` - Get single list by ID
 - `POST /api/lists` - Create a new list
 - `PUT /api/lists/:id` - Update list name
 - `DELETE /api/lists/:id` - Delete list and all its tasks
 
 #### Tasks
 - `GET /api/lists/:listId/tasks` - Get all tasks for a list
+- `GET /api/tasks/important` - Get all important tasks across all lists
 - `POST /api/lists/:listId/tasks` - Create a new task
-- `PUT /api/tasks/:id` - Update task (title, completed, important)
+- `PATCH /api/tasks/:id` - Update task (title, is_completed, is_important)
 - `DELETE /api/tasks/:id` - Delete a task
 - `PATCH /api/lists/:listId/tasks/reorder` - Reorder tasks via drag-and-drop
-
-#### Health Check
-- `GET /api/health` - Server and database health status
 
 ## Usage
 
@@ -201,14 +263,7 @@ The app will run on http://localhost:5173
 
 ### Testing
 
-The application has comprehensive test coverage across all layers:
-
-#### Backend Tests (49 tests)
-```bash
-cd server
-npm test
-```
-Covers authentication, lists, tasks, validation, and error handling.
+The application has comprehensive test coverage at the frontend and E2E layers:
 
 #### Frontend Tests (66 tests)
 ```bash
@@ -220,13 +275,15 @@ Includes:
 - **Integration Tests** (5): Component interaction flows
 - **Accessibility Tests** (19): WCAG compliance, keyboard navigation, screen readers
 
-#### E2E Tests (29 tests)
+#### E2E Tests (29 tests passing, 9 skipped)
 ```bash
 npm run test:e2e
 ```
 End-to-end tests using Playwright covering full user workflows.
 
-**Total: 144/153 tests passing (94% pass rate)**
+**Total: 95 tests (66 frontend + 29 E2E)**
+
+See [FRONTEND_TEST_RESULTS.md](./FRONTEND_TEST_RESULTS.md) and [E2E_TEST_RESULTS.md](./E2E_TEST_RESULTS.md) for detailed results.
 
 ### Code Coverage
 
@@ -315,4 +372,4 @@ This project includes comprehensive documentation:
 
 ---
 
-**Project Status**: 🚀 Production Ready | **Tests**: 144/153 (94%) | **Accessibility**: WCAG 2.1 AA ✅
+**Project Status**: 🚀 Production Ready | **Tests**: 95 (66 Frontend + 29 E2E) | **Accessibility**: WCAG 2.1 AA ✅

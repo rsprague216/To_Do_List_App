@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { Header } from '../components/Header';
+import { Header } from '../components/layout/Header';
 
 // Mock AuthContext
 vi.mock('../context/AuthContext', () => ({

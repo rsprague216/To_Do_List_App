@@ -89,25 +89,12 @@ server/
 ├── db/              # Database utilities
 ├── middleware/      # Express middleware
 ├── routes/          # API route handlers
-└── __tests__/       # Backend tests
+└── __tests__/       # Component tests
 ```
 
 ## Testing Requirements
 
 All contributions must include appropriate tests:
-
-### Backend Tests
-
-```bash
-cd server
-npm test
-```
-
-- Test all new API endpoints
-- Test authentication/authorization
-- Test input validation
-- Test error handling
-- Maintain >80% code coverage
 
 ### Frontend Tests
 

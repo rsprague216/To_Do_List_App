@@ -17,7 +17,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthPage } from './pages/AuthPage';
-import { AppLayout } from './pages/AppLayout';
+import { AppPage } from './pages/AppPage';
 import './App.css';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
             path="/app/*" 
             element={
               <ProtectedRoute>
-                <AppLayout />
+                <AppPage />
               </ProtectedRoute>
             } 
           />

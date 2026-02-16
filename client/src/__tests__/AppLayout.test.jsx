@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { AppLayout } from '../pages/AppLayout';
+import { AppPage } from '../pages/AppPage';
 
 // Mock the AuthContext
 vi.mock('../context/AuthContext', () => ({
@@ -12,7 +11,7 @@ vi.mock('../context/AuthContext', () => ({
 }));
 
 // Mock child components
-vi.mock('../components/Header', () => ({
+vi.mock('../components/layout/Header', () => ({
   Header: ({ username, currentListName }) => (
     <div data-testid="header">
       Header: {username} - {currentListName}
@@ -20,7 +19,7 @@ vi.mock('../components/Header', () => ({
   )
 }));
 
-vi.mock('../components/Sidebar', () => ({
+vi.mock('../components/layout/Sidebar', () => ({
   Sidebar: ({ lists, selectedListId, onSelectList }) => (
     <div data-testid="sidebar">
       Sidebar
@@ -34,24 +33,37 @@ vi.mock('../components/Sidebar', () => ({
   )
 }));
 
-vi.mock('../components/MainContent', () => ({
-  MainContent: ({ selectedList, tasks }) => (
+vi.mock('../components/layout/MainContent', () => ({
+  MainContent: ({ selectedListId, listName }) => (
     <div data-testid="main-content">
-      MainContent - {selectedList?.name}
-      <div>Tasks: {tasks.length}</div>
+      MainContent - {listName}
+      <div>ListId: {selectedListId}</div>
     </div>
   )
 }));
 
-describe('AppLayout Component', () => {
-  let fetchMock;
+// Mock the useLists hook
+vi.mock('../hooks/useLists', () => ({
+  useLists: () => ({
+    lists: [
+      { id: 2, name: 'Work', is_default: false },
+      { id: 3, name: 'Personal', is_default: false },
+    ],
+    selectedListId: 'my-day',
+    setSelectedListId: vi.fn(),
+    selectedList: { id: 'my-day', name: 'My Day', isDefault: true },
+    resolveListId: vi.fn((id) => (id === 'my-day' ? 1 : id)),
+    createList: vi.fn(),
+    updateList: vi.fn(),
+    deleteList: vi.fn(),
+    isLoading: false,
+    error: '',
+    setError: vi.fn(),
+  })
+}));
 
+describe('AppPage Component', () => {
   beforeEach(() => {
-    // Mock fetch globally
-    fetchMock = vi.fn();
-    global.fetch = fetchMock;
-
-    // Mock window.innerWidth for mobile detection
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
@@ -64,16 +76,7 @@ describe('AppLayout Component', () => {
   });
 
   it('should render Header, Sidebar, and MainContent components', async () => {
-    // Mock successful API responses
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
-        { id: 1, name: 'My Day', is_default: true },
-        { id: 2, name: 'Work', is_default: false }
-      ]
-    });
-
-    render(<AppLayout />);
+    render(<AppPage />);
 
     await waitFor(() => {
       expect(screen.getByTestId('header')).toBeInTheDocument();
@@ -82,59 +85,17 @@ describe('AppLayout Component', () => {
     });
   });
 
-  it('should fetch lists on mount', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
-        { id: 1, name: 'My Day', is_default: true },
-        { id: 2, name: 'Work', is_default: false },
-        { id: 3, name: 'Personal', is_default: false }
-      ]
-    });
-
-    render(<AppLayout />);
+  it('should display custom lists in sidebar', async () => {
+    render(<AppPage />);
 
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith(
-        expect.stringContaining('/lists'),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            'Authorization': 'Bearer fake-jwt-token'
-          })
-        })
-      );
-    });
-  });
-
-  it('should filter out default lists from sidebar', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
-        { id: 1, name: 'My Day', is_default: true },
-        { id: 2, name: 'Work', is_default: false },
-        { id: 3, name: 'Personal', is_default: false }
-      ]
-    });
-
-    render(<AppLayout />);
-
-    await waitFor(() => {
-      // Should show Work and Personal buttons (custom lists)
       expect(screen.getByRole('button', { name: 'Work' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Personal' })).toBeInTheDocument();
-      
-      // Should NOT show My Day button (it's a default list)
-      expect(screen.queryByRole('button', { name: 'My Day' })).not.toBeInTheDocument();
     });
   });
 
   it('should have default selected list as "my-day"', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => []
-    });
-
-    render(<AppLayout />);
+    render(<AppPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Selected: my-day')).toBeInTheDocument();
@@ -145,53 +106,29 @@ describe('AppLayout Component', () => {
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
-      value: 500 // Mobile width
+      value: 500
     });
 
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => []
-    });
+    render(<AppPage />);
 
-    render(<AppLayout />);
-
-    // The component should render (testing that isMobile state is set correctly)
     await waitFor(() => {
       expect(screen.getByTestId('sidebar')).toBeInTheDocument();
     });
   });
 
   it('should handle window resize events', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: async () => []
-    });
+    render(<AppPage />);
 
-    render(<AppLayout />);
-
-    // Trigger resize event
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
       value: 500
     });
-    
+
     window.dispatchEvent(new Event('resize'));
 
     await waitFor(() => {
       expect(screen.getByTestId('sidebar')).toBeInTheDocument();
-    });
-  });
-
-  it('should handle API errors gracefully', async () => {
-    // Mock failed API response
-    fetchMock.mockRejectedValueOnce(new Error('Network error'));
-
-    render(<AppLayout />);
-
-    await waitFor(() => {
-      // Component should still render even with error
-      expect(screen.getByTestId('header')).toBeInTheDocument();
     });
   });
 });
